@@ -1,4 +1,4 @@
-# [TeXt Theme](https://github.com/kitian616/jekyll-TeXt-theme)
+<!-- # [TeXt Theme](https://github.com/kitian616/jekyll-TeXt-theme)
 
 [![license](https://img.shields.io/github/license/kitian616/jekyll-TeXt-theme.svg)](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE)
 [![Gem Version](https://img.shields.io/gem/v/jekyll-text-theme.svg)](https://github.com/kitian616/jekyll-TeXt-theme/releases)
@@ -86,4 +86,6 @@ TeXt use [Tomorrow](https://github.com/chriskempson/tomorrow-theme) as the highl
 
 ## License
 
-TeXt Theme is [MIT licensed](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE).
+TeXt Theme is [MIT licensed](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE). -->
+
+This is my personal website. Thank Tian Qi for his fabulous website template -- [TeXt Theme](https://github.com/kitian616/jekyll-TeXt-theme)!
