@@ -1,0 +1,46 @@
+header:
+  - titles:
+      # @start locale config
+      en      : &EN       About
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      zh-Hans : &ZH_HANS  关于
+      # @end locale config
+    url: /about.html
+
+  - titles:
+      # @start locale config
+      en      : &EN       Projects&Notes
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      zh-Hans : &ZH_HANS  个人项目
+      # @end locale config
+    url: /blog/
+
+  - titles:
+      # @start locale config
+      en      : &EN       Publications
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      zh-Hans : &ZH_HANS  学术发表
+      # @end locale config
+    url: /publication.html
+  
+  - titles:
+      # @start locale config
+      en      : &EN       Google Scholar
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      zh-Hans : &ZH_HANS  谷歌学术
+      # @end locale config
+    url: https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AOAOcb0EwHLIVQMA4Z9pGThEVj2KqDlUXTfBb5ynBK_HtYhvzNu_eVv0skYdRIv5x5RLObxek6t4CHA_a2souw&user=XLGOc58AAAAJ
+
+

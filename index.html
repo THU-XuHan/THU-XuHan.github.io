@@ -1,0 +1,54 @@
+---
+layout: base
+title: Han Xu
+excerpt: Han Xu | 许涵
+---
+
+{%- if site.author.type == 'organization' -%}
+  {%- assign _author_itemtype = 'http://schema.org/Organization' -%}
+{%- else -%}
+  {%- assign _author_itemtype = 'http://schema.org/Person' -%}
+{%- endif -%}
+
+<style>
+.layout--author {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 高度设为视口高度 */
+  text-align: center;
+}
+
+.author-avatar img {
+  border-radius: 50%;
+  border: 5px solid #ccc; /* 你可以根据需要调整边框颜色和宽度 */
+  width: 150px; /* 根据需要调整头像大小 */
+  height: 150px; /* 保证宽高一致以保持圆形 */
+}
+
+.title-text {
+  margin-top: 20px;
+}
+
+.content {
+  max-width: 600px; /* 根据需要调整内容宽度 */
+  margin: 0 auto;
+}
+</style>
+
+<div itemscope itemtype="{{ _author_itemtype }}" class="layout--author">
+  <div class="main">
+    <div class="content">
+      <div class="author-avatar">
+        <div style="text-align: center;">
+          <img itemprop="image" alt="my photo" src="/assets/images/me_square.png"/>
+        </div>
+      </div>
+      <h1 itemprop="name" class="title-text">{{ site.author.name }}</h1>
+      {% include author-links.html author=site.author %}
+      <p><a itemprop="url" class="social-link blog" title="Visit my blog." href="/about.html" target="_self">Visit My Website</a></p>
+    </div>
+  </div>
+</div>
+<script>{%- include scripts/common.js -%}</script>
+{% include analytics.html %}
