@@ -18,7 +18,7 @@
 ##############################
 text_skin: default # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-url     : "http://127.0.0.1:4000/" # the base hostname & protocol for your site e.g. https://www.someone.com
+url     : https://thu-xuhan.github.io # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : / # does not include hostname
 title   : Han Xu
 description: > # this means to ignore newlines until "Language & timezone"
