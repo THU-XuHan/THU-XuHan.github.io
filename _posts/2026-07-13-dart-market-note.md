@@ -62,9 +62,9 @@ The section above explains the overall logic; this section fills in the details:
 
 Building on the UC intuition from Section 2, what generator $i$ submits is collectively known in the industry as an **offer** — this is the so-called **three-part offer**, consisting of three pieces:
 
-- $C_i^{SU}$: startup offer ($/start)
+- $C_i^{SU}$: startup offer (\\$/start)
 - $C_i^{min}$: minimum-energy offer (the price at output level $\underline{P}_i$)
-- $c_i(p)$: energy offer curve, a piecewise-linear curve of $p$ vs. $\$/MWh$
+- $c_i(p)$: energy offer curve, a piecewise-linear curve of $p$ vs. $\\$/MWh$
 
 These three pieces are the actual source of the $C_i^{SU}, C_i^{min}, c_i(\cdot)$ terms that appear in the UC objective function below — they aren't set by the ISO out of thin air; the generator reports them itself.
 
@@ -157,13 +157,13 @@ Each solve produces a fresh set of $p^{RT}_{i,t}$ — the dispatch instruction (
 
 ### A concrete example
 
-Suppose in some hour $h$, generator A clears a DAM award of $p^*_A=100$ MW at $P^{DA}_h=\$30$/MWh. In real time, for some reason (say, congestion, or a forced backdown), it actually only produces $p^{RT}_A=80$ MW, and $P^{RT}_h=\$50$/MWh at that time. Two-settlement:
+Suppose in some hour $h$, generator A clears a DAM award of $p^*_A=100$ MW at $P^{DA}_h=\\$30$/MWh. In real time, for some reason (say, congestion, or a forced backdown), it actually only produces $p^{RT}_A=80$ MW, and $P^{RT}_h=\\$50$/MWh at that time. Two-settlement:
 
 $$
 \text{Payment}_A = \underbrace{100\times30}_{DA} + \underbrace{(80-100)\times50}_{RT\ \text{deviation}} = 3000-1000=\$2000
 $$
 
-In the same hour, suppose load B bought $d^*_B=100$ MW in DAM at $P^{DA}_h=\$30$/MWh, but actually consumed $d^{RT}_B=110$ MW (say, an unexpectedly hot afternoon):
+In the same hour, suppose load B bought $d^*_B=100$ MW in DAM at $P^{DA}_h=\\$30$/MWh, but actually consumed $d^{RT}_B=110$ MW (say, an unexpectedly hot afternoon):
 
 $$
 \text{Cost}_B = 100\times30+(110-100)\times50=3000+500=\$3500
@@ -177,12 +177,12 @@ Both sides settle by the exact same logic: the DA portion is locked in, and the 
 
 That example already shows the problem.
 
-**Generator A** was forced to underproduce, and happened to run into a rising RT price, losing an extra **\$1000** (relative to the benchmark of "deliver exactly 100 MW, collect a flat \$3000"). **Load B**'s situation runs the opposite direction but follows the same logic: it consumed more than forecast, and happened to run into a rising RT price, paying an extra **\$500** (relative to the benchmark of "consume exactly 100 MW").
+**Generator A** was forced to underproduce, and happened to run into a rising RT price, losing an extra **\\$1000** (relative to the benchmark of "deliver exactly 100 MW, collect a flat \\$3000"). **Load B**'s situation runs the opposite direction but follows the same logic: it consumed more than forecast, and happened to run into a rising RT price, paying an extra **\\$500** (relative to the benchmark of "consume exactly 100 MW").
 
 But this "loss" depends entirely on which way the luck breaks. Flip it around:
 
-- If generator A had instead been instructed to produce *more* — say 120 MW instead of being cut to 80 — with the same $P^{RT}_h=\$50$, its deviation term becomes $(120-100)\times50=+\$1000$: the same underlying uncertainty about "deviating from the DA award" turns into a windfall instead.
-- If load B had actually consumed only 90 MW that day (instead of 110), with the same $P^{RT}_h=\$50$, its deviation term becomes $(90-100)\times50=-\$500$ — meaning it pays \$500 *less*, effectively "selling back" the 10 MW it didn't use at \$50 in real time.
+- If generator A had instead been instructed to produce *more* — say 120 MW instead of being cut to 80 — with the same $P^{RT}_h=\\$50$, its deviation term becomes $(120-100)\times50=+\\$1000$: the same underlying uncertainty about "deviating from the DA award" turns into a windfall instead.
+- If load B had actually consumed only 90 MW that day (instead of 110), with the same $P^{RT}_h=\\$50$, its deviation term becomes $(90-100)\times50=-\\$500$ — meaning it pays \\$500 *less*, effectively "selling back" the 10 MW it didn't use at \\$50 in real time.
 
 In other words:
 
@@ -229,7 +229,7 @@ Back to generator A and load B from Section 4 — virtual trading directly addre
 
 ### Addressing generator A's loss (system level)
 
-Suppose this node has historically shown a pattern where "DA tends to be underpriced, RT tends to run high" — say, because forecasters systematically underweight how often a nearby wind farm underperforms in the evening. Traders who've studied this pattern judge that $P^{RT}>P^{DA}$ is more likely than not, and submit **DECs**, buying in DAM. This extra demand pushes $P^{DA}_h$ up from \$30 to, say, \$40 (simplifying here by assuming the award quantity stays fixed and only the clearing price rises).
+Suppose this node has historically shown a pattern where "DA tends to be underpriced, RT tends to run high" — say, because forecasters systematically underweight how often a nearby wind farm underperforms in the evening. Traders who've studied this pattern judge that $P^{RT}>P^{DA}$ is more likely than not, and submit **DECs**, buying in DAM. This extra demand pushes $P^{DA}_h$ up from \\$30 to, say, \\$40 (simplifying here by assuming the award quantity stays fixed and only the clearing price rises).
 
 Now, even though generator A still only produces 80 MW (still forced into the same backdown), its settlement becomes:
 
@@ -237,25 +237,25 @@ $$
 100\times40+(80-100)\times50=4000-1000=\$3000
 $$
 
-— exactly back to what it would have earned by delivering 100 MW precisely. The presence of virtual traders pulled forward, into the DA price, some of the scarcity value that would otherwise only have shown up in real time — indirectly making up generator A's \$1000 loss. And notably, generator A **didn't have to do anything** — the price signal simply got better.
+— exactly back to what it would have earned by delivering 100 MW precisely. The presence of virtual traders pulled forward, into the DA price, some of the scarcity value that would otherwise only have shown up in real time — indirectly making up generator A's \\$1000 loss. And notably, generator A **didn't have to do anything** — the price signal simply got better.
 
 **There's a second-order effect here worth spelling out.** DEC buying adds to the demand side of the DAM power-balance constraint — for the market to clear, that extra "demand" has to be matched by some change on the supply side, and mechanically there are two possibilities:
 
 1. **Intensive margin**: already-cleared units get bigger awards (they were producing anyway, they just sell more of it forward);
 2. **Extensive margin**: the higher clearing price crosses some unit's offer threshold, and a unit that wouldn't otherwise have cleared gets newly committed — $u_{i,h}$ flips from 0 to 1.
 
-Only the second case actually brings new physical capacity online. This is the same mechanism as the coal-plant example from Section 3's Deep Dive (DA rising from \$30 to \$65 caused a \$50-marginal-cost unit to newly clear) — if what's happening here is an extensive-margin effect, that newly committed unit is also online and dispatchable in real time, and $u^*_{i,h}$ is exactly the initial commitment state UC hands off to RTM (the physical link we discussed in Section 3). One more online unit in the system means the probability and severity of an actual real-time scarcity event both go down — and scarcity is the main driver of extreme RT price spikes.
+Only the second case actually brings new physical capacity online. This is the same mechanism as the coal-plant example from Section 3's Deep Dive (DA rising from \\$30 to \\$65 caused a \\$50-marginal-cost unit to newly clear) — if what's happening here is an extensive-margin effect, that newly committed unit is also online and dispatchable in real time, and $u^*_{i,h}$ is exactly the initial commitment state UC hands off to RTM (the physical link we discussed in Section 3). One more online unit in the system means the probability and severity of an actual real-time scarcity event both go down — and scarcity is the main driver of extreme RT price spikes.
 
 Two things worth being precise about, though:
 
 - **This only holds at the extensive margin.** If the extra demand just gives already-online units bigger awards without committing any new unit, "scarcity gets relieved" doesn't apply.
-- **This isn't quite the same as "load gets cheaper electricity."** Notice load's DA-hedged cost in this example actually *rises* (from \$30/MWh to \$40/MWh — that's the whole point). What's really happening: DA price had been systematically underpricing the true underlying risk (the wind-underperformance pattern), so capacity that should have been committed through the cheap, efficient DAM channel wasn't — and that cost was always going to get paid eventually, just through a more expensive, less efficient channel instead (RUC's out-of-market commitment, or RT scarcity pricing — both of which ultimately get charged back to load as uplift anyway). So the more defensible framing is: **not "cheaper," but "less exposed to tail-risk price spikes, with the unavoidable cost now paid through the cheaper channel instead."** This is the same logic behind the Potomac Economics MISO finding cited in Section 6 — virtual trading lets the market reflect the expected value of real-time uncertainty ahead of time, rather than waiting for the expensive RUC/scarcity-pricing machinery to kick in.
+- **This isn't quite the same as "load gets cheaper electricity."** Notice load's DA-hedged cost in this example actually *rises* (from \\$30/MWh to \\$40/MWh — that's the whole point). What's really happening: DA price had been systematically underpricing the true underlying risk (the wind-underperformance pattern), so capacity that should have been committed through the cheap, efficient DAM channel wasn't — and that cost was always going to get paid eventually, just through a more expensive, less efficient channel instead (RUC's out-of-market commitment, or RT scarcity pricing — both of which ultimately get charged back to load as uplift anyway). So the more defensible framing is: **not "cheaper," but "less exposed to tail-risk price spikes, with the unavoidable cost now paid through the cheaper channel instead."** This is the same logic behind the Potomac Economics MISO finding cited in Section 6 — virtual trading lets the market reflect the expected value of real-time uncertainty ahead of time, rather than waiting for the expensive RUC/scarcity-pricing machinery to kick in.
 
 ### Addressing load B's loss (individual level)
 
 Conversely, if load B (or its LSE) had itself anticipated that its forecast might be running low — say, knowing a heat wave was coming — it could **actively play the role of a virtual trader itself**: in addition to buying 100 MW of forecasted physical load, it also buys a 10 MW **DEC** position, specifically betting that "real time will likely come in more expensive than forecast."
 
-If things play out exactly as in Section 4 — 110 MW actually consumed, $P^{RT}=\$50$:
+If things play out exactly as in Section 4 — 110 MW actually consumed, $P^{RT}=\\$50$:
 
 $$
 \text{Physical portion (unchanged):}\ 100\times30+(110-100)\times50=3500
@@ -267,7 +267,7 @@ $$
 \text{Net cost:}\ 3500-200=\$3300
 $$
 
-Interestingly, \$3300 is exactly equal to $110\times30$ — meaning that as long as load B sizes its DEC position precisely to match its true realized deviation, its final net cost becomes exactly equivalent to "settling its entire actual 110 MW consumption at the DA price." It's converted the direction-uncertain deviation risk from Section 4 into a fixed, DA-priced bill. Of course, this only works if load B correctly anticipates how large its own deviation will be — get that sizing wrong, and the hedge is only partial, leaving some residual exposure.
+Interestingly, \\$3300 is exactly equal to $110\times30$ — meaning that as long as load B sizes its DEC position precisely to match its true realized deviation, its final net cost becomes exactly equivalent to "settling its entire actual 110 MW consumption at the DA price." It's converted the direction-uncertain deviation risk from Section 4 into a fixed, DA-priced bill. Of course, this only works if load B correctly anticipates how large its own deviation will be — get that sizing wrong, and the hedge is only partial, leaving some residual exposure.
 
 ### Summary
 
