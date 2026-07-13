@@ -115,7 +115,7 @@ $$
 - $\underline{P}_i,\overline{P}_i$：机组物理出力上下限，$R_i$：爬坡限制；
 - $L_h=\sum_j d_{j,h}$：来自 load 的 bid 加总。
 
-解出这个 MIP 之后，$u^*_{i,h}$ 告诉你哪些机组该开，$p^*_{i,h}$ 就是每个机组在 DAM 拿到的 **award**，而能量平衡约束对应的 shadow price（对偶变量）$\lambda_h$，就是这一时段的 **DA price** $P^{DA}_h$。
+解出这个 MIP 之后，$u^\*\_{i,h}$ 告诉你哪些机组该开，$p^\*\_{i,h}$ 就是每个机组在 DAM 拿到的 **award**，而能量平衡约束对应的 shadow price（对偶变量）$\lambda_h$，就是这一时段的 **DA price** $P^{DA}_h$。
 
 值得强调一句：UC 这个 program 本身"不知道"任何机组的真实发电成本，也"不知道"任何负荷的真实用电价值——它只是在参与方自己申报的 $C_i^{SU}, C_i^{min}, c_i(\cdot), v_j(d)$ 上求解一个最优化问题。这也是为什么"如实报价"（truthful bidding）在这类市场设计里很重要：如果参与方谎报 offer/bid，UC 解出来的结果就不再是基于真实成本 / 真实价值的最优解。
 

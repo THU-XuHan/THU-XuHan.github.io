@@ -115,7 +115,7 @@ where:
 - $\underline{P}_i,\overline{P}_i$: the unit's physical output limits, $R_i$: ramp-rate limit;
 - $L_h=\sum_j d_{j,h}$: the sum of load's bids.
 
-Solving this MIP gives you $u^*_{i,h}$ — which units should be online — and $p^*_{i,h}$ — the **award** each unit receives in DAM. The shadow price (dual variable) of the power-balance constraint, $\lambda_h$, is the **DA price** $P^{DA}_h$ for that hour.
+Solving this MIP gives you $u^\*\_{i,h}$ — which units should be online — and $p^\*\_{i,h}$ — the **award** each unit receives in DAM. The shadow price (dual variable) of the power-balance constraint, $\lambda_h$, is the **DA price** $P^{DA}_h$ for that hour.
 
 Worth emphasizing: the UC program itself has no idea what any generator's true generation cost is, nor what any load's true consumption is worth — it's simply solving an optimization problem over the numbers $C_i^{SU}, C_i^{min}, c_i(\cdot), v_j(d)$ that participants themselves reported. This is exactly why **truthful bidding** matters so much in this kind of market design: if a participant misreports its offer/bid, the UC solution is no longer the true-cost-optimal / true-value-optimal outcome.
 
