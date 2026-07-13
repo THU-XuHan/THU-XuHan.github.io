@@ -16,6 +16,8 @@ key: page-about
 <img src="/assets/images/me1.png" alt="Me" height="400">
 </div>
 
-I am a G1 PhD student at Caltech, advised by [Prof. Steven Low](https://netlab.caltech.edu/) in the Department of Computing + Mathematical Sciences. My research focuses on the stochastic optimization and robust control and their application to power systems. Before, I conducted most of my research on developing specialized numerical algorithms to accelerate the simulation of power electronics-based power systems (see my selected [publications](/publication.html)).
+I am a G2 PhD student at Caltech, advised by [Prof. Steven Low](https://netlab.caltech.edu/) in the Department of Computing + Mathematical Sciences. My research focuses on uncertainty quantification and risk management from the perspective of optimization, including scenario programs and distributionally robust optimization. I am also interested in electricity market and virtual trading.
 
-Previously, I obtained my bachelor degree and master degree both in Electrical Engineering and a second bachelor degree in Mathematics at Tsinghua University. I was honored to be guided by [Prof. Zhengming Zhao](https://scholar.google.com/citations?user=aA1wPOQAAAAJ&hl=zh-CN) and work with [Yangbin Zeng](https://www2.scut.edu.cn/ep/2024/0603/c18719a555482/page.htm) and [Jialin Zheng](https://charlinzheng.github.io/). We have done a lot of interesting things on building HIL simulation platforms!
+Before, I conducted most of my research on developing specialized numerical algorithms to accelerate the simulation of power electronics-based power systems (see my selected [publications](/publication.html)).
+
+Previously, I obtained my bachelor degree and master degree both in Electrical Engineering and a second bachelor degree in Mathematics at Tsinghua University. I was honored to be guided by [Prof. Zhengming Zhao](https://scholar.google.com/citations?user=aA1wPOQAAAAJ&hl=zh-CN) and work with [Yangbin Zeng](https://www2.scut.edu.cn/ep/2024/0603/c18719a555482/page.htm) and [Jialin Zheng](https://charlinzheng.github.io/). We have done a lot of interesting things on building Hardware-in-the-Loop simulation platforms!
