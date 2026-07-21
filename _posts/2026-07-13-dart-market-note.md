@@ -48,7 +48,7 @@ Consider a single day, call it $D$. Then $D\text{-}1$ is the day before $D$.
 
 ### But DA is only a "forecast"
 
-DA dispatch is fundamentally a decision made against a **forecast** of the next day (forecasted load, forecasted renewable output), and any forecast carries error. That error can't be resolved on $D\text{-}1$ — it can only be corrected in real time, on day $D$ itself, by the **Real-Time Market (RTM)**. RTM runs continuously throughout $D$ (the exact granularity varies by market — ERCOT, for instance, runs economic dispatch every 5 minutes and settles every 15 minutes).
+DA dispatch is fundamentally a decision made against a **forecast** of the next day (forecasted load, forecasted renewable output), and any forecast carries error. That error can't be resolved on $D\text{-}1$ — it can only be corrected in real time, on day $D$ itself, by the **Real-Time Market (RTM)**. RTM runs continuously throughout $D$ (the exact granularity varies by market — ERCOT, for instance, runs economic dispatch (SCED) every 5 minutes, producing a dispatch instruction and a 5-minute price at each solve — but financial settlement uses 15-minute intervals, where the settlement price is the average of the three constituent 5-minute prices. The finer dispatch granularity is needed operationally — the grid needs generation adjustments on a minute-to-minute basis — while the coarser settlement granularity simplifies billing and reduces noise in the price signal that participants actually get paid or charged against).
 
 Intuitively, RTM solves an **Economic Dispatch (ED)** problem: given the units UC has already decided to commit, redistribute their output at every moment to meet actual load at minimum cost, without violating any safety constraint. Unlike UC, there's no "on/off" integer decision here anymore — whether a unit is online has already been mostly settled at the UC (and possibly subsequent reliability-commitment) stage. ED's exact mathematical form is also deferred to Section 3.
 
@@ -70,26 +70,11 @@ These three pieces are the actual source of the $C_i^{SU}, C_i^{min}, c_i(\cdot)
 
 ### What does load submit in DAM?
 
-Correspondingly, what load $j$ (or more precisely, the LSE representing it, via a QSE) submits is collectively known as a **bid**: a **demand bid curve** $v_j(d)$ — how much it's willing to pay for the $d$-th MW — playing a role symmetric to the generator's offer curve. If load is close to fully inelastic (as much retail load in practice is), this curve collapses to a fixed quantity $d_{j,h}$ (bid close to the price cap, ensuring it almost always clears). Total system load is then $L_h=\sum_j d_{j,h}$ — the actual source of $L_h$ in UC.
+Correspondingly, what load $j$ (or more precisely, the **LSE — Load Serving Entity**, i.e. the utility or retail electricity provider that serves end-use customers — representing it, via a **QSE — Qualified Scheduling Entity**, the intermediary that actually interfaces with the ISO's market systems on behalf of generators, loads, or traders) submits is collectively known as a **bid**: a **demand bid curve** $v_j(d)$ — how much it's willing to pay for the $d$-th MW — playing a role symmetric to the generator's offer curve. If load is close to fully inelastic (as much retail load in practice is), this curve collapses to a fixed quantity $d_{j,h}$ (bid close to the price cap, ensuring it almost always clears). Total system load is then $L_h=\sum_j d_{j,h}$ — the actual source of $L_h$ in UC.
 
 ### UC: turning offers and bids into awards and prices
 
-```mermaid
-flowchart TD
-    A["Generator i's offer<br/>C_SU, C_min, c_i(p)"]
-    B["Load j's bid<br/>d_j,h"]
-    C["Physical parameters<br/>P_min, P_max, ramp R"]
-    UC["UC (Day-Ahead, MIP)<br/>min total cost<br/>s.t. power balance + safety"]
-    D["u*, p*<br/>commitment + DA award"]
-    E["P_DA<br/>Day-Ahead price"]
-    A --> UC
-    B --> UC
-    C --> UC
-    UC --> D
-    UC --> E
-```
-
-Now we can write out the UC left open in Section 2 in full:
+With both sides' submissions in hand, we can write out the UC left open in Section 2 in full:
 
 $$
 \min_{u_{i,h},\, p_{i,h},\, y_{i,h}} \quad \sum_{i,h} \Big[\, C_i^{SU}\cdot y_{i,h} \;+\; C_i^{min}\cdot u_{i,h} \;+\; c_i(p_{i,h}) \,\Big]
@@ -117,7 +102,24 @@ where:
 
 Solving this MIP gives you $u^\*\_{i,h}$ — which units should be online — and $p^\*\_{i,h}$ — the **award** each unit receives in DAM. The shadow price (dual variable) of the power-balance constraint, $\lambda_h$, is the **DA price** $P^{DA}_h$ for that hour.
 
-Worth emphasizing: the UC program itself has no idea what any generator's true generation cost is, nor what any load's true consumption is worth — it's simply solving an optimization problem over the numbers $C_i^{SU}, C_i^{min}, c_i(\cdot), v_j(d)$ that participants themselves reported. This is exactly why **truthful bidding** matters so much in this kind of market design: if a participant misreports its offer/bid, the UC solution is no longer the true-cost-optimal / true-value-optimal outcome.
+Worth emphasizing: the UC program itself has no idea what any generator's true generation cost is, nor what any load's true consumption is worth — it's simply solving an optimization problem over the numbers that participants themselves reported: the generator's offer components $C_i^{SU}, C_i^{min}, c_i(\cdot)$, and load's demand bid curve $v_j(d)$ (or equivalently, in the inelastic case, the fixed quantities $d_{j,h}$ that determine $L_h$). This is exactly why **truthful bidding** matters so much in this kind of market design: if a participant misreports its offer/bid, the UC solution is no longer the true-cost-optimal / true-value-optimal outcome.
+
+The flowchart below summarizes this information flow — offers and bids go in, awards and the DA price come out:
+
+```mermaid
+flowchart TD
+    A["Generator i's offer<br/>C_SU, C_min, c_i(p)"]
+    B["Load j's bid<br/>d_j,h"]
+    C["Physical parameters<br/>P_min, P_max, ramp R"]
+    UC["UC (Day-Ahead, MIP)<br/>min total cost<br/>s.t. power balance + safety"]
+    D["u*, p*<br/>commitment + DA award"]
+    E["P_DA<br/>Day-Ahead price"]
+    A --> UC
+    B --> UC
+    C --> UC
+    UC --> D
+    UC --> E
+```
 
 ### What do generation and load each do in RTM?
 
@@ -249,7 +251,7 @@ Only the second case actually brings new physical capacity online. This is the s
 Two things worth being precise about, though:
 
 - **This only holds at the extensive margin.** If the extra demand just gives already-online units bigger awards without committing any new unit, "scarcity gets relieved" doesn't apply.
-- **This isn't quite the same as "load gets cheaper electricity."** Notice load's DA-hedged cost in this example actually *rises* (from \\$30/MWh to \\$40/MWh — that's the whole point). What's really happening: DA price had been systematically underpricing the true underlying risk (the wind-underperformance pattern), so capacity that should have been committed through the cheap, efficient DAM channel wasn't — and that cost was always going to get paid eventually, just through a more expensive, less efficient channel instead (RUC's out-of-market commitment, or RT scarcity pricing — both of which ultimately get charged back to load as uplift anyway). So the more defensible framing is: **not "cheaper," but "less exposed to tail-risk price spikes, with the unavoidable cost now paid through the cheaper channel instead."** This is the same logic behind the Potomac Economics MISO finding cited in Section 6 — virtual trading lets the market reflect the expected value of real-time uncertainty ahead of time, rather than waiting for the expensive RUC/scarcity-pricing machinery to kick in.
+- **This isn't quite the same as "load gets cheaper electricity."** Notice load's DA-hedged cost in this example actually *rises* (from \\$30/MWh to \\$40/MWh — that's the whole point). What's really happening: DA price had been systematically underpricing the true underlying risk (the wind-underperformance pattern), so capacity that should have been committed through the cheap, efficient DAM channel wasn't — and that cost was always going to get paid eventually, just through a more expensive, less efficient channel instead (**RUC — Reliability Unit Commitment** — a second commitment run the ISO performs *after* DAM clears, checking whether the DAM-cleared units are actually sufficient to meet the reliability forecast; if not, RUC commits additional units "out of market," meaning those units get make-whole payments but weren't economically cleared in DAM — or RT scarcity pricing — both of which ultimately get charged back to load as uplift anyway). So the more defensible framing is: **not "cheaper," but "less exposed to tail-risk price spikes, with the unavoidable cost now paid through the cheaper channel instead."** This is the same logic behind the Potomac Economics MISO finding cited in Section 6 — virtual trading lets the market reflect the expected value of real-time uncertainty ahead of time, rather than waiting for the expensive RUC/scarcity-pricing machinery to kick in.
 
 ### Addressing load B's loss (individual level)
 
@@ -268,6 +270,11 @@ $$
 $$
 
 Interestingly, \\$3300 is exactly equal to $110\times30$ — meaning that as long as load B sizes its DEC position precisely to match its true realized deviation, its final net cost becomes exactly equivalent to "settling its entire actual 110 MW consumption at the DA price." It's converted the direction-uncertain deviation risk from Section 4 into a fixed, DA-priced bill. Of course, this only works if load B correctly anticipates how large its own deviation will be — get that sizing wrong, and the hedge is only partial, leaving some residual exposure.
+
+**A natural question: why not just raise the DA bid from 100 to 110 MW directly, instead of adding a DEC?** If load B is certain it will consume 110 MW, the arithmetic comes out the same either way. But the two instruments are fundamentally different, and the difference matters:
+
+- **Raising the DA bid changes the physical planning signal.** The ISO uses $d_{j,h}$ to plan UC — it decides which generators to commit based on the load it expects to serve. If load B inflates its bid to 110 MW when its best honest estimate is still 100 MW (it only *suspects* a heat wave, not certain), the ISO commits generation capacity for load that may not materialize. If the heat wave doesn't come and load B only consumes 100 MW, those extra committed units were wasteful — and load B itself is now selling back 10 MW into real time, bearing the opposite direction of deviation risk rather than eliminating it.
+- **A DEC is purely financial — it leaves the physical signal untouched.** Load B keeps its honest best-estimate bid at 100 MW (so UC plans against the right number), and separately layers on a financial position that pays off if $P^{RT}>P^{DA}$. The DEC settles on the price spread regardless of what load B actually consumes, so it functions as a *price* hedge rather than a *quantity* commitment. This separation is the whole point: it lets the load manage its financial risk without corrupting the information content of its physical bid — and market efficiency depends on those physical bids being honest forecasts, not risk-management-inflated numbers.
 
 ### Summary
 
